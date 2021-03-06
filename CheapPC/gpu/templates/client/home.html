@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'gpu/style.css' %}">
 
     <h1> CheapPC.com </h1>
+    <p>New user? <a href="{% url 'gpu:signup' %}"> Create an account </a></p>
 
     {% for GPU in gpu_list %}
     <div class="card" style="width: 18rem;">
