@@ -2,25 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Home Page</title>
 </head>
 <body>
 
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'gpu/style.css' %}">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'gpu/style.css' %}">
 
-<h2> Home Page </h2>
-{% for GPU in gpu_list %}
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title"> {{ GPU.name }} </h5>
-        <img src="..." class="card-img-top" alt="...">
-        <p class="card-text"> Price: {{ GPU.price }} </p>
-        <p><a href="{% url 'gpu:gpu_card' pk=GPU.pk %}"> Detail View </a></p>
+    <h1> CheapPC.com </h1>
+
+    {% for GPU in gpu_list %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title"> {{ GPU.name }} </h5>
+            <img src="..." class="card-img-top" alt="...">
+            <p class="card-text"> Price: {{ GPU.price }} </p>
+            <p><a href="{% url 'gpu:gpu_card' pk=GPU.pk %}"> Detail View </a></p>
+        </div>
     </div>
-</div>
-<br><br>
-{% endfor %}
+    <br><br>
+    {% endfor %}
 
 </body>
 </html>
