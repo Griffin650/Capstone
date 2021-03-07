@@ -4,7 +4,7 @@ from django.views import generic
 
 from .models import GPU
 from .models import populate
-from .forms import NewUser
+from .forms import NewUser, register_user, UserForm
 
 
 class HomeView(generic.ListView):
@@ -29,17 +29,7 @@ class CardView(generic.DetailView):
         return render(request, 'client/home.html', {'card': card})
 
 
-class SignUpView(generic.DetailView):
-    model = GPU
-    template_name = 'client/signup.html'
-
-    def get_object(self):
-        return self.model.objects.get(pk=self.request.user.pk)
-
-    def get_queryset(self):
-        return ''
-
-
+'''
 # taken from, resource: https://docs.djangoproject.com/en/3.1/topics/forms/
 def signup(request):
     # if this is a POST request we need to process the form data
@@ -56,3 +46,19 @@ def signup(request):
     else:
         form = NewUser()
     return render(request, 'client/new-user.html', {'form': form})
+'''
+
+
+# references-
+# https://www.geeksforgeeks.org/django-modelform-create-form-from-models/
+# https://simpleisbetterthancomplex.com/article/2017/08/19/how-to-render-django-form-manually.html
+def signup(request):
+    context = {}
+    # create object of form
+    form = UserForm(request.POST or None, request.FILES or None)
+    # check if form data is valid
+    if form.is_valid():
+        # save the form data to model
+        form.save()
+    context['form'] = form
+    return render(request, "client/new-user.html", {'form': form})

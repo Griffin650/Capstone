@@ -6,6 +6,5 @@ app_name = 'gpu'
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
     path('<int:pk>/', views.CardView.as_view(), name='gpu_card'),
-    #path('signup/', views.SignUpView.as_view(), name='signup'),
     path('signup/', views.signup, name='signup'),
 ]
