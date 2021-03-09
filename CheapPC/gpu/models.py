@@ -7,7 +7,7 @@ import csv
 class GPU(models.Model):
     name = models.CharField(max_length=500)
     price = models.FloatField(default=-1)
-    link = models.CharField(max_length=500)
+    link = models.CharField(max_length=500, unique=True, primary_key=True)
 
     def __str__(self):
         return self.name
@@ -15,7 +15,7 @@ class GPU(models.Model):
 
 # model for User
 class User(models.Model):
-    email = models.CharField(max_length=100)
+    email = models.CharField(max_length=100, unique=True, primary_key=True)
     password = models.CharField(max_length=50)
 
     def __str__(self):
