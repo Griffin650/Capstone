@@ -28,9 +28,8 @@ def populate():
     with open('gpu/files/out.csv', 'r') as file:
         line = csv.reader(file)
         for row in line:
-            try:
-                new_gpu = GPU(link=row[0], name=row[1], price=row[2][1:])
-                new_gpu.save()
-            except EOFError:
-                print("Error saving value: [" + row[0] + "]")
-                return
+            GPU.objects.get_or_create(
+                link=row[0],
+                name=row[1],
+                price=row[2][1:],
+            )
