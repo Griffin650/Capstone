@@ -7,7 +7,7 @@ import csv
 class GPU(models.Model):
     name = models.CharField(max_length=500)
     price = models.FloatField(default=-1)
-    link = models.CharField(max_length=500, unique=True, primary_key=True)
+    link = models.CharField(max_length=500, unique=True)
 
     def __str__(self):
         return self.name
