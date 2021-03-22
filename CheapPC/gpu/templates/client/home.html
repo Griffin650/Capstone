@@ -16,9 +16,9 @@
     <div class="card" style="width: 18rem;">
         <div class="card-body">
             <h5 class="card-title"> {{ GPU.name }} </h5>
-            <img src="..." class="card-img-top" alt="...">
+            <img src="{{ GPU.image }}" class="card-img-top" alt="...">
             <p class="card-text"> Price: {{ GPU.price }} </p>
-            <p><a href="{% url 'gpu:gpu_card' pk=GPU.pk %}"> Detail View </a></p>
+            <p><a href="{% url 'gpu:detail' pk=GPU.pk %}"> Detail View </a></p>
         </div>
     </div>
     <br><br>

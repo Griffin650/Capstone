@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import GPU, User
+from .models import GPUModel, UserModel
 
-admin.site.register(GPU)
-admin.site.register(User)
+admin.site.register(GPUModel)
+admin.site.register(UserModel)

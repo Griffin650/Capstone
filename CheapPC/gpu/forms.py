@@ -1,10 +1,10 @@
 from django import forms
 
-from .models import User
+from .models import UserModel
 
 
 # ModelForm for User
 class UserForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = UserModel
         fields = '__all__'

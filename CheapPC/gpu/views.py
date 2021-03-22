@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 
-from .models import GPU
+from .models import GPUModel
 from .models import populate
 from .forms import UserForm
 
@@ -16,16 +16,17 @@ class HomeView(generic.ListView):
         """
         list all GPUs in DB
         """
-        return GPU.objects.all()
+        return GPUModel.objects.all()
 
 
 class CardView(generic.DetailView):
-    model = GPU
+    model = GPUModel
     template_name = 'client/card.html'
 
-    def gpu_card(request, pk):
-        card = get_object_or_404(GPU, pk=pk)
-        return render(request, 'client/home.html', {'card': card})
+
+def gpu_card(request, pk):
+    gpu = get_object_or_404(GPUModel, pk=pk)
+    return render(request, 'client/card.html', {'gpu': gpu})
 
 
 # references-
