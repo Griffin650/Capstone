@@ -9,12 +9,23 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'gpu/style.css' %}">
 
+    <!-- Side navigation -->
+    <div class="sidenav">
+      <h2> Current Crypto Prices </h2>
+        <img src="..." alt="BTC image">
+        <h4> BTC: ${{ btc_price }} USD </h4>
+        <img src="..." alt="ETH image">
+        <h4> ETH: ${{ eth_price }} USD </h4>
+        <img src="..." alt="LTC image">
+        <h4> LTC: ${{ ltc_price }} USD </h4>
+    </div>
+
     <div class="card" style="width: 18rem;">
         <div class="card-body">
             <h2> Card Page </h2>
             <h5 class="card-title"> Name: {{ gpu.name }} </h5>
-            <img src="{{ gpu.image }}" class="card-img-top" alt="...">
-            <p class="card-text"> Price: {{gpu.price}} </p>
+            <img src="{{ gpu.image }}" class="card-img-top" alt="Image not found">
+            <p class="card-text"> Price: {{ gpu.price }} </p>
             <p><a href="{{ gpu.link }}"> find here </a></p>
             <a href="javascript:window.history.back();" class="btn btn-primary">Go back</a>
         </div>

@@ -26,7 +26,7 @@ class UserModel(models.Model):
 # Populates the DB with data read in from <files/out.csv>
 # updated 3/3/21
 def populate():
-    with open('gpu/files/out2.csv', 'r') as file:
+    with open('gpu/files/out.csv', 'r') as file:
         line = csv.reader(file)
         for row in line:
             GPUModel.objects.get_or_create(

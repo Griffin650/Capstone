@@ -9,20 +9,42 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'gpu/style.css' %}">
 
-    <h1> CheapPC.com </h1>
-    <p>New user? <a href="{% url 'gpu:signup' %}"> Create an account </a></p>
 
-    {% for GPU in gpu_list %}
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title"> {{ GPU.name }} </h5>
-            <img src="{{ GPU.image }}" class="card-img-top" alt="...">
-            <p class="card-text"> Price: {{ GPU.price }} </p>
-            <p><a href="{% url 'gpu:detail' pk=GPU.pk %}"> Detail View </a></p>
-        </div>
+    <!-- Side navigation -->
+    <div class="sidenav">
+      <h2> Current Crypto Prices </h2>
+        <img src="..." alt="BTC image">
+        <h4> BTC: ${{ btc_price }} USD </h4>
+        <img src="..." alt="ETH image">
+        <h4> ETH: ${{ eth_price }} USD </h4>
+        <img src="..." alt="LTC image">
+        <h4> LTC: ${{ ltc_price }} USD </h4>
     </div>
-    <br><br>
-    {% endfor %}
+
+
+    <!-- Main content -->
+    <div class="main">
+        <h1> CheapPC.com </h1>
+        <hr><hr>
+        <p> New user? <a href="{% url 'gpu:signup' %}"> Create an account </a></p>
+        <hr><hr>
+
+        <!-- Loop through GPUs in DB -->
+        {% for GPU in gpu_list %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title"> {{ GPU.name }} </h5>
+                <img src="{{ GPU.image }}" class="card-img-top" alt="Image not found">
+                <p class="card-text"> Price: {{ GPU.price }} </p>
+                <p><a href="{% url 'gpu:gpu_card' pk=GPU.pk %}"> Detail View </a></p>
+            </div>
+        </div>
+
+        <br><br><hr>
+        {% endfor %}
+
+    </div>
+    <hr>
 
 </body>
 </html>
