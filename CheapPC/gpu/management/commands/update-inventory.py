@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-import os
+import os  # necessary for exec() call
 
 
 class Command(BaseCommand):

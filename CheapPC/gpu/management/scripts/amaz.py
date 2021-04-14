@@ -16,10 +16,6 @@ def get_title(soup):
         # Title as a string value
         title_string = title_value.strip().replace(',', '')
 
-        # print(type(title))
-        # print(type(title_value))
-        # print(type(title_string))
-        # print()
 
     except AttributeError:
         title_string = ""
@@ -128,10 +124,9 @@ if __name__ == '__main__':
             File.write(f"{title},")
             print("Product Price =", price)
             File.write(f"{price},")
-            # print("Availability =", aval)
-            # File.write(f"{aval},\n")
             print("Img =", img)
             File.write(f"{img},\n")
             print()
             print()
+        File.truncate(0)  # erases contents of file after writing
         File.close()

@@ -4,21 +4,22 @@ from django.shortcuts import render, get_object_or_404, redirect
 import requests
 
 import yfinance as yf
-import plotly.graph_objs as go
 from plotly.offline import plot
+import plotly.express as px
+import pandas as pd
 
+from .models import GPUModel, populate, update_prices
 
-from .models import GPUModel, populate
+cryptos = ['BTC-USD', 'ETH-USD', 'LTC-USD']
 
 
 def graphs(request):
-    return render(request, 'client/graphs.html', {'btc_price_graph': crypto_graph('BTC'),
-                                                  'eth_price_graph': crypto_graph('ETH'),
-                                                  'ltc_price_graph': crypto_graph('LTC')})
+    return render(request, 'client/graphs.html', {'price_graph': crypto_graph(cryptos)})
 
 
 def home_view(request):
     populate()
+    update_prices()
 
     gpu_list = GPUModel.objects.all()
     return render(request, 'client/home.html', {'gpu_list': gpu_list,
@@ -30,10 +31,16 @@ def home_view(request):
 
 def gpu_card(request, pk):
     card = get_object_or_404(GPUModel, pk=pk)
+    hist_prices = card.get_hist_prices_tuple()
+    hist_prices_df = pd.DataFrame(hist_prices)
+    hist_prices_df.columns = ['price', 'date']
+    hist_prices_graph = reg_graph(hist_prices_df)
+
     return render(request, 'client/card.html', {'gpu': card,
                                                 'btc_price': get_btc_price(),
                                                 'eth_price': get_eth_price(),
-                                                'ltc_price': get_ltc_price()})
+                                                'ltc_price': get_ltc_price(),
+                                                'hist_prices_graph': hist_prices_graph})
 
 
 # API: https://min-api.cryptocompare.com/documentation?key=Price&cat=multipleSymbolsFullPriceEndpoint
@@ -50,24 +57,39 @@ def get_ltc_price():
 
 
 # Reference:
-# https://medium.datadriveninvestor.com/python-how-to-get-live-cryptocurrency-data-less-than-0-1-second-lag-7f23d854314a
-def crypto_graph(ticker):
-    # Get Bitcoin data
-    data = yf.download(tickers=ticker+'-USD', period='1wk', interval='60m')
-    # declare figure
-    fig = go.Figure()
-    # Candlestick
-    fig.add_trace(go.Candlestick(x=data.index,
-                                 open=data['Open'],
-                                 high=data['High'],
-                                 low=data['Low'],
-                                 close=data['Close'], name='market data'))
-    # Add titles
-    fig.update_layout(
-        title=ticker+' Price Over Past Week',
-        yaxis_title=ticker+' Price USD')
-    # X-Axes
-    fig.update_xaxes(rangeslider_visible=True)
+# https://plotly.com/python/line-charts/
+def crypto_graph(ticker_list):
+    data_frame_list = list()
+    for ticker in ticker_list:
+        data_frame = yf.download(tickers=ticker, group_by=ticker, period='1wk', interval='60m')
+        data_frame['Ticker'] = ticker
+        data_frame_list.append(data_frame)
+    dfl = pd.concat(data_frame_list)
+    print(dfl)
+    fig = px.line(dfl,
+                  x=dfl.index,
+                  y=((dfl['High'] + dfl['Low']) / 2),
+                  color='Ticker',
+                  title='Cryptocurrency Prices Over Last Week',
+                  labels={
+                      "Datetime": "Date",
+                      "y": "Price USD"
+                  }
+                  )
+    return plot(fig, output_type='div')
+
+
+def reg_graph(*args):
+    print(args[0])
+    fig = px.line(args[0],
+                  x='date',
+                  y='price',
+                  # title='Price of Product Over Time',
+                  # labels={
+                  #     "Datetime": "Date",
+                  #     "y": "Price USD"
+                  # }
+                  )
     return plot(fig, output_type='div')
 
 

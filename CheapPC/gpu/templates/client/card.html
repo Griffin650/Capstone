@@ -11,6 +11,7 @@
 
     <!-- Side navigation -->
     <div class="sidenav">
+        <h1> <a href="{% url 'gpu:home_view' %}"> CheapPC.com </a> </h1>
       <h2> Current Crypto Prices </h2>
         <img src="..." alt="BTC image">
         <h4> BTC: ${{ btc_price }} USD </h4>
@@ -18,6 +19,7 @@
         <h4> ETH: ${{ eth_price }} USD </h4>
         <img src="..." alt="LTC image">
         <h4> LTC: ${{ ltc_price }} USD </h4>
+        <a href="{% url 'gpu:graphs' %}"> See prices over last week </a>
     </div>
 
     <div class="card" style="width: 18rem;">
@@ -30,6 +32,10 @@
             <a href="javascript:window.history.back();" class="btn btn-primary">Go back</a>
         </div>
     </div>
+
+    {% autoescape off %}
+    {{ hist_prices_graph }}
+    {% endautoescape %}
 
 </body>
 </html>

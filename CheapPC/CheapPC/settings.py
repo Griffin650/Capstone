@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 
 CRONJOBS = [
-    ('*/1 * * * *', 'gpu.cron.get_amazon_gpus', '>> ./CheapPC/log.txt'),
+    ('*/1 * * * *', 'gpu.cron.get_amazon_gpus'),
 ]
 
 
@@ -63,6 +63,7 @@ ROOT_URLCONF = 'CheapPC.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['gpu/templates'],
         'DIRS': ['gpu/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
