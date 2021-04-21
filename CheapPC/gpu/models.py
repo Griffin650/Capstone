@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 import csv
 import datetime
@@ -39,6 +40,11 @@ class HistoricalPrice(models.Model):
 
     def __str__(self):
         return str(self.model.name) + ' ' + str(self.date) + ': ' + str(self.price)
+
+
+class Notification(models.Model):
+    gpu = models.ForeignKey(GPUModel, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 
 # Populates the DB with data read in from <files/out.csv>

@@ -8,7 +8,8 @@ from plotly.offline import plot
 import plotly.express as px
 import pandas as pd
 
-from .models import GPUModel, populate, update_prices
+from .models import GPUModel, Notification, populate, update_prices
+from .forms import UserForm, NotificationForm
 
 cryptos = ['BTC-USD', 'ETH-USD', 'LTC-USD']
 
@@ -19,7 +20,7 @@ def graphs(request):
 
 def home_view(request):
     populate()
-    update_prices()
+    # update_prices()
 
     gpu_list = GPUModel.objects.all()
     return render(request, 'client/home.html', {'gpu_list': gpu_list,
@@ -35,12 +36,16 @@ def gpu_card(request, pk):
     hist_prices_df = pd.DataFrame(hist_prices)
     hist_prices_df.columns = ['price', 'date']
     hist_prices_graph = reg_graph(hist_prices_df)
+    notification = Notification.objects.get_or_create(gpu=card, user=request.user)
+    # TODO if no user is logged in, how to pass 'notification' to card.html -
+    #  'AnonymousUser' is not iterable
 
     return render(request, 'client/card.html', {'gpu': card,
                                                 'btc_price': get_btc_price(),
                                                 'eth_price': get_eth_price(),
                                                 'ltc_price': get_ltc_price(),
-                                                'hist_prices_graph': hist_prices_graph})
+                                                'hist_prices_graph': hist_prices_graph,
+                                                'notification': notification})
 
 
 # API: https://min-api.cryptocompare.com/documentation?key=Price&cat=multipleSymbolsFullPriceEndpoint
@@ -98,7 +103,7 @@ def reg_graph(*args):
 # https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -107,5 +112,5 @@ def signup(request):
             login(request, user)
             return redirect('/gpu')
     else:
-        form = UserCreationForm()
+        form = UserForm()
     return render(request, 'registration/signup.html', {'form': form})

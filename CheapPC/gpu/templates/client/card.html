@@ -13,11 +13,8 @@
     <div class="sidenav">
         <h1> <a href="{% url 'gpu:home_view' %}"> CheapPC.com </a> </h1>
       <h2> Current Crypto Prices </h2>
-        <img src="..." alt="BTC image">
         <h4> BTC: ${{ btc_price }} USD </h4>
-        <img src="..." alt="ETH image">
         <h4> ETH: ${{ eth_price }} USD </h4>
-        <img src="..." alt="LTC image">
         <h4> LTC: ${{ ltc_price }} USD </h4>
         <a href="{% url 'gpu:graphs' %}"> See prices over last week </a>
     </div>
@@ -32,6 +29,17 @@
             <a href="javascript:window.history.back();" class="btn btn-primary">Go back</a>
         </div>
     </div>
+
+
+    {% if user.is_authenticated %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value ="Notify Me of Price Drops"/>
+        </form>
+    {% endif %}
+
+
 
     {% autoescape off %}
     {{ hist_prices_graph }}

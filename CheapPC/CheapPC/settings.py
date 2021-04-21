@@ -29,12 +29,14 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+# Application definition
+
+
 CRONJOBS = [
-    ('*/1 * * * *', 'gpu.cron.get_amazon_gpus'),
+    # ('1 * * * *', 'gpu.cron.get_amazon_gpus'),
+    ('1 * * * *', '..gpu.cron.update_price_charts')
 ]
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'gpu.apps.GpuConfig',
@@ -46,7 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_crontab',
     'django_extensions',
+
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
