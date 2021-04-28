@@ -21,29 +21,31 @@
 
     <div class="card" style="width: 18rem;">
         <div class="card-body">
-            <h2> Card Page </h2>
-            <h5 class="card-title"> Name: {{ gpu.name }} </h5>
+            <h4 class="card-title"> Item: {{ gpu.name }} </h4>
             <img src="{{ gpu.image }}" class="card-img-top" alt="Image not found">
-            <p class="card-text"> Price: {{ gpu.price }} </p>
+            <p class="card-text">
+                Price: {{ gpu.price }}
+                {% if user.is_authenticated %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value ="Notify Me of Price Drops"/>
+                    </form>
+                {% else %}
+                    <p> <a href="{% url 'gpu:login' %}">Login</a> to be notified of price drops! </p>
+                {% endif %}
+            </p>
             <p><a href="{{ gpu.link }}"> find here </a></p>
-            <a href="javascript:window.history.back();" class="btn btn-primary">Go back</a>
         </div>
     </div>
-
-
-    {% if user.is_authenticated %}
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value ="Notify Me of Price Drops"/>
-        </form>
-    {% endif %}
 
 
 
     {% autoescape off %}
     {{ hist_prices_graph }}
     {% endautoescape %}
+
+    <a href="javascript:window.history.back();" class="btn btn-primary">Go back</a>
 
 </body>
 </html>

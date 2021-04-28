@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 import csv
 import datetime
@@ -12,6 +13,9 @@ class GPUModel(models.Model):
     price = models.FloatField(default=-1)
     link = models.CharField(max_length=500, unique=True)
     image = models.CharField(max_length=500)
+
+    class Meta:
+        ordering = ['name']
 
     def get_hist_prices(self):
         return self.historicalprice_set.all()
@@ -33,10 +37,14 @@ class GPUModel(models.Model):
 class HistoricalPrice(models.Model):
     model = models.ForeignKey(GPUModel, on_delete=models.CASCADE)
     price = models.FloatField(default=-1)
-    date = models.DateTimeField(default=datetime.datetime.now())
+    date = models.DateTimeField()  # default=datetime.datetime.now(tz=timezone.utc))
+    decreased = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['price']
+        ordering = ['date']
+
+    def __ge__(self, other):
+        return self.price >= other
 
     def __str__(self):
         return str(self.model.name) + ' ' + str(self.date) + ': ' + str(self.price)
@@ -45,6 +53,9 @@ class HistoricalPrice(models.Model):
 class Notification(models.Model):
     gpu = models.ForeignKey(GPUModel, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        ordering = ['user']
 
 
 # Populates the DB with data read in from <files/out.csv>
@@ -60,8 +71,3 @@ def populate():
                 image=row[3],
             )
         file.close()
-
-
-def update_prices():
-    for gpu in GPUModel.objects.all():
-        HistoricalPrice(model=gpu, price=gpu.price).save()

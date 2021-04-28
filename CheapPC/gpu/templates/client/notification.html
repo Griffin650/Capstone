@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Notification </title>
+</head>
+<body>
+
+    <!-- Loop through GPUs in DB -->
+    {% for notif in notifications %}
+        <p> {{ notif.gpu.name }} has dropped to ${{ notif.gpu.price }}!</p>
+    {% endfor %}
+
+</body>
+</html>

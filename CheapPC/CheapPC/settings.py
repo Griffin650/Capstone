@@ -32,12 +32,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 
-CRONJOBS = [
-    # ('1 * * * *', 'gpu.cron.get_amazon_gpus'),
-    ('1 * * * *', '..gpu.cron.update_price_charts')
-]
-
-
 INSTALLED_APPS = [
     'gpu.apps.GpuConfig',
     'django.contrib.admin',
@@ -49,6 +43,13 @@ INSTALLED_APPS = [
     'django_crontab',
     'django_extensions',
 
+]
+
+
+CRONJOBS = [
+    # ('1 * * * *', 'gpu.cron.get_amazon_gpus'),
+    ('1 * * * *', 'cron.update_price_charts'),
+    # ('1 * * * *', 'python manage.py update-price-charts')
 ]
 
 
@@ -137,3 +138,12 @@ STATIC_URL = '/static/'
 # Where a user is directed after successful login
 
 LOGIN_REDIRECT_URL = '/gpu'
+
+# Email Setup
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'CheapPCUpdates@gmail.com'
+EMAIL_HOST_PASSWORD = 'zuvdoc-budqi2-Sujtuq'

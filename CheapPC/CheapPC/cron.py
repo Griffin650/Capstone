@@ -1,7 +1,11 @@
 # Reference for using cron
 # https://pypi.org/project/django-crontab/
 # https://gutsytechster.wordpress.com/2019/06/24/how-to-setup-a-cron-job-in-django/
-from .models import populate, update_prices
+from django.utils import timezone
+
+import datetime
+
+from ..gpu.models import populate, GPUModel, HistoricalPrice
 
 
 def get_amazon_gpus():
@@ -12,4 +16,8 @@ def get_amazon_gpus():
 
 def update_price_charts():
     print('updating price charts')
-    update_prices()
+    for gpu in GPUModel.objects.all():
+        HistoricalPrice(model=gpu,
+                        price=gpu.price,
+                        date=datetime.datetime.now(tz=timezone.utc)
+                        ).save()
