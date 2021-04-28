@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
-import os # for testing
+import os  # for testing
 
 
 # Function to extract Product Title

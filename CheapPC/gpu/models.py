@@ -41,10 +41,12 @@ class HistoricalPrice(models.Model):
     decreased = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['date']
+        ordering = ['-date']
 
+    '''
     def __ge__(self, other):
         return self.price >= other
+    '''
 
     def __str__(self):
         return str(self.model.name) + ' ' + str(self.date) + ': ' + str(self.price)
@@ -56,6 +58,9 @@ class Notification(models.Model):
 
     class Meta:
         ordering = ['user']
+
+    def __str__(self):
+        return str(self.user.username) + ' -- ' + str(self.gpu.name)
 
 
 # Populates the DB with data read in from <files/out.csv>
