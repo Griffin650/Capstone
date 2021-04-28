@@ -1,3 +1,5 @@
+# Author: Seth Kimpler
+
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, get_object_or_404, redirect
 import requests

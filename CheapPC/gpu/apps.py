@@ -1,3 +1,5 @@
+# Author: Seth Kimpler
+
 from django.apps import AppConfig
 
 

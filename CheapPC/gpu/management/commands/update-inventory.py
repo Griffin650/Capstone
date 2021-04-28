@@ -1,3 +1,5 @@
+# Author: Seth Kimpler
+
 from django.core.management.base import BaseCommand
 import os  # necessary for exec() call, DO NOT REMOVE
 

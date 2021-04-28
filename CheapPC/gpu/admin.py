@@ -1,3 +1,5 @@
+# Author: Seth Kimpler
+
 from django.contrib import admin
 
 from .models import GPUModel, Notification, HistoricalPrice
